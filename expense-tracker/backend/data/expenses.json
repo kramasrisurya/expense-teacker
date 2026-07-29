@@ -1,0 +1,32 @@
+[
+  {
+    "_id": "473c7e89-03eb-467e-83a3-b13bfd23ee1f",
+    "userId": "f499082f-3a03-4672-a0e3-ac81b3682705",
+    "title": "Hello ",
+    "amount": 500,
+    "category": "Transport",
+    "date": "2026-07-09",
+    "description": "srfjoi",
+    "createdAt": "2026-07-28T18:40:21.595Z"
+  },
+  {
+    "_id": "93c8c6fa-256e-4213-bf37-4218281b1494",
+    "userId": "5c62d2ee-b3f8-40f4-83c7-03549daf96f0",
+    "title": "lkdrgv",
+    "amount": 100000000,
+    "category": "Food",
+    "date": "2026-07-24",
+    "description": "",
+    "createdAt": "2026-07-28T18:53:56.255Z"
+  },
+  {
+    "_id": "b1930be2-06a5-432d-89b9-c2028c62de5e",
+    "userId": "f499082f-3a03-4672-a0e3-ac81b3682705",
+    "title": "hello",
+    "amount": 250,
+    "category": "Bills",
+    "date": "2026-07-03",
+    "description": "",
+    "createdAt": "2026-07-28T18:55:16.800Z"
+  }
+]

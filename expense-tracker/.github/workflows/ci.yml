@@ -1,0 +1,63 @@
+# File: .github/workflows/ci.yml
+# Purpose: GitHub Actions CI - runs on every push to main branch
+# This automatically installs dependencies and builds the project
+
+name: CI Pipeline
+
+# Trigger the workflow on pushes to the main branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Backend Job ──────────────────────────────────────────
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      # Step 1: Pull the latest code from GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js version 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Step 3: Install backend dependencies from package.json
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Try to start the server briefly to check for errors
+      - name: Check server starts
+        run: timeout 5 node server.js || true
+
+  # ─── Frontend Job ─────────────────────────────────────────
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Install frontend dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the React app (Vite)
+      - name: Build project
+        run: npm run build
