@@ -85,7 +85,7 @@ function EditExpense() {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Amount ($)</label>
+              <label>Amount (₹)</label>
               <div className="input-wrapper">
                 <HiOutlineCash className="input-icon" />
                 <input
