@@ -92,8 +92,8 @@ function Dashboard() {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <Link to="/add" className="quick-action-btn btn-primary" style={{ color: 'white' }}>
-          <HiOutlinePlus /> Add Expense
+        <Link to="/add" className="quick-action-btn">
+          <HiOutlinePlus className="quick-action-icon" /> Add Expense
         </Link>
       </div>
 
