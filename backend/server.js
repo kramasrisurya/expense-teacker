@@ -21,6 +21,11 @@ const expenseRoutes = require('./routes/expenseRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 
+// Health check endpoint (used by Render)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // ─── Start Server ──────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
