@@ -85,9 +85,9 @@ function Dashboard() {
       {/* Stats */}
       <div className="stats-grid">
         <StatCard icon={<HiOutlineCash />} label="Total Expenses" value={totalExpenses} color="purple" />
-        <StatCard icon={<HiOutlineChartPie />} label="Total Amount" value={`₹${totalAmount.toFixed(2)}`} color="green" />
+        <StatCard icon={<HiOutlineChartPie />} label="Total Amount" value={`₹${Math.round(totalAmount)}`} color="green" />
         <StatCard icon={<HiOutlineTag />} label="Categories" value={categories.length} color="cyan" />
-        <StatCard icon={<HiOutlineCalendar />} label="This Month" value={`₹${monthTotal.toFixed(2)}`} color="pink" />
+        <StatCard icon={<HiOutlineCalendar />} label="This Month" value={`₹${Math.round(monthTotal)}`} color="pink" />
       </div>
 
       {/* Quick Actions */}
@@ -126,7 +126,7 @@ function Dashboard() {
                     </div>
                   </div>
                   <div style={{ fontWeight: 700, color: 'var(--primary)' }}>
-                    ₹{e.amount.toFixed(2)}
+                    ₹{Math.round(e.amount)}
                   </div>
                 </div>
               ))}
@@ -180,7 +180,7 @@ function Dashboard() {
                       </span>
                     </td>
                     <td style={{ fontWeight: 700, color: 'var(--primary)' }}>
-                      ₹{expense.amount.toFixed(2)}
+                      ₹{Math.round(expense.amount)}
                     </td>
                     <td style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>
                       {new Date(expense.date).toLocaleDateString()}

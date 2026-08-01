@@ -37,7 +37,7 @@ const createExpense = async (req, res) => {
     const expense = expenseDB.insert({
       userId: req.user,
       title,
-      amount: Number(amount),
+      amount: Math.round(Number(amount)),
       category,
       date: date || new Date().toISOString().split('T')[0],
       description: description || '',
@@ -61,7 +61,7 @@ const updateExpense = async (req, res) => {
     const { title, amount, category, date, description } = req.body;
     const updated = expenseDB.update(req.params.id, {
       title,
-      amount: Number(amount),
+      amount: Math.round(Number(amount)),
       category,
       date,
       description,

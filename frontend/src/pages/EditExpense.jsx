@@ -90,7 +90,7 @@ function EditExpense() {
                 <HiOutlineCash className="input-icon" />
                 <input
                   type="number" name="amount" value={form.amount}
-                  onChange={handleChange} min="0" step="0.01" required
+                  onChange={handleChange} min="0" step="1" required
                 />
               </div>
             </div>

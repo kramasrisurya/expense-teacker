@@ -46,7 +46,7 @@ function ExpenseChart({ expenses }) {
             border: '1px solid var(--border)',
             boxShadow: 'var(--shadow-lg)',
           }}
-          formatter={(value) => `₹${value}`}
+          formatter={(value) => `₹${Math.round(value)}`}
         />
         <Legend />
       </PieChart>
