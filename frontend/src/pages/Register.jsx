@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {
-  HiOutlineUser, HiOutlineMail, HiOutlineLockClosed,
-  HiOutlineEye, HiOutlineEyeOff, HiOutlineUserAdd,
-} from 'react-icons/hi';
-import '../css/Auth.css';
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import { useReveal } from '../hooks/useAnimations';
 
 function Register({ loginUser }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  useReveal([]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,77 +27,78 @@ function Register({ loginUser }) {
   };
 
   return (
-    <div className="auth-page page-enter">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-icon"><HiOutlineUserAdd /></div>
-          <h2>Create Account</h2>
-          <p>Start tracking your expenses</p>
-        </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-20">
+      <div
+        aria-hidden="true"
+        className="float-slow pointer-events-none absolute left-1/2 top-24 h-80 w-80 -translate-x-1/2 rounded-full bg-accent/10 blur-3xl"
+      />
 
-        {error && <div className="error-msg"><HiOutlineLockClosed /> {error}</div>}
+      <div className="card glow-card reveal relative w-full max-w-md p-8 sm:p-10">
+        <p className="text-xs font-medium uppercase tracking-[0.22em] text-neutral-500">
+          Start tracking
+        </p>
+        <h2 className="mt-2 font-display text-4xl font-medium tracking-tight text-white">
+          Create <span className="italic text-accent">account</span>.
+        </h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Name</label>
-            <div className="input-wrapper">
-              <HiOutlineUser className="input-icon" />
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your name"
-                required
-              />
-            </div>
+        {error && (
+          <div className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Name
+            </label>
+            <input
+              type="text" name="name" value={form.name} onChange={handleChange}
+              placeholder="Your name" required className="field"
+            />
           </div>
 
-          <div className="form-group">
-            <label>Email</label>
-            <div className="input-wrapper">
-              <HiOutlineMail className="input-icon" />
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Email
+            </label>
+            <input
+              type="email" name="email" value={form.email} onChange={handleChange}
+              placeholder="you@example.com" required className="field"
+            />
           </div>
 
-          <div className="form-group">
-            <label>Password (min 6 chars)</label>
-            <div className="input-wrapper">
-              <HiOutlineLockClosed className="input-icon" />
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Password (min 6 chars)
+            </label>
+            <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Create a password"
-                minLength={6}
-                required
+                name="password" value={form.password} onChange={handleChange}
+                placeholder="Create a password" minLength={6} required className="field pr-12"
               />
               <button
                 type="button"
-                className="password-toggle"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 transition-colors hover:text-white"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? <HiOutlineEyeOff /> : <HiOutlineEye />}
               </button>
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary auth-btn">
+          <button type="submit" className="btn-primary mt-2 w-full">
             Create Account
           </button>
         </form>
 
-        <p className="auth-footer">
-          Already have an account? <Link to="/login">Sign in</Link>
+        <p className="mt-8 text-center text-sm text-neutral-500">
+          Already have an account?{' '}
+          <Link to="/login" className="font-medium text-accent hover:brightness-110">
+            Sign in
+          </Link>
         </p>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import { useParallax } from './hooks/useAnimations';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,6 +15,8 @@ import NotFound from './pages/NotFound';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useParallax();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,7 +48,7 @@ function App() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <div className="flex min-h-screen items-center justify-center">
         <div className="spinner" />
       </div>
     );
@@ -61,7 +64,7 @@ function App() {
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register loginUser={loginUser} />} />
 
         {/* Protected */}
-        <Route path="/dashboard" element={<ProtectedRoute user={user}><Dashboard /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute user={user}><Dashboard user={user} /></ProtectedRoute>} />
         <Route path="/add" element={<ProtectedRoute user={user}><AddExpense /></ProtectedRoute>} />
         <Route path="/edit/:id" element={<ProtectedRoute user={user}><EditExpense /></ProtectedRoute>} />
 

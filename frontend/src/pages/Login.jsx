@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { HiOutlineMail, HiOutlineLockClosed, HiOutlineEye, HiOutlineEyeOff, HiOutlineLogin } from 'react-icons/hi';
-import '../css/Auth.css';
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import { useReveal } from '../hooks/useAnimations';
 
 function Login({ loginUser }) {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  useReveal([]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,61 +27,68 @@ function Login({ loginUser }) {
   };
 
   return (
-    <div className="auth-page page-enter">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-icon"><HiOutlineLogin /></div>
-          <h2>Welcome Back</h2>
-          <p>Sign in to your account</p>
-        </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-20">
+      <div
+        aria-hidden="true"
+        className="float-slow pointer-events-none absolute left-1/2 top-24 h-80 w-80 -translate-x-1/2 rounded-full bg-accent/10 blur-3xl"
+      />
 
-        {error && <div className="error-msg"><HiOutlineLockClosed /> {error}</div>}
+      <div className="card glow-card reveal relative w-full max-w-md p-8 sm:p-10">
+        <p className="text-xs font-medium uppercase tracking-[0.22em] text-neutral-500">
+          Welcome back
+        </p>
+        <h2 className="mt-2 font-display text-4xl font-medium tracking-tight text-white">
+          Sign <span className="italic text-accent">in</span>.
+        </h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <div className="input-wrapper">
-              <HiOutlineMail className="input-icon" />
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+        {error && (
+          <div className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Email
+            </label>
+            <input
+              type="email" name="email" value={form.email} onChange={handleChange}
+              placeholder="you@example.com" required className="field"
+            />
           </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <div className="input-wrapper">
-              <HiOutlineLockClosed className="input-icon" />
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Password
+            </label>
+            <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                required
+                name="password" value={form.password} onChange={handleChange}
+                placeholder="Enter your password" required className="field pr-12"
               />
               <button
                 type="button"
-                className="password-toggle"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 transition-colors hover:text-white"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? <HiOutlineEyeOff /> : <HiOutlineEye />}
               </button>
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary auth-btn">
+          <button type="submit" className="btn-primary mt-2 w-full">
             Sign In
           </button>
         </form>
 
-        <p className="auth-footer">
-          Don't have an account? <Link to="/register">Register</Link>
+        <p className="mt-8 text-center text-sm text-neutral-500">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-medium text-accent hover:brightness-110">
+            Register
+          </Link>
         </p>
       </div>
     </div>

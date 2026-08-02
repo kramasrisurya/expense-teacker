@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import {
-  HiOutlineTag, HiOutlineCash, HiOutlineCalendar,
-  HiOutlineClipboardList, HiOutlinePencilAlt, HiOutlineX,
-} from 'react-icons/hi';
+import { HiOutlineX } from 'react-icons/hi';
 import LoadingSpinner from '../components/LoadingSpinner';
-import '../css/Form.css';
-import '../css/Auth.css';
 
 const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Other'];
 
@@ -65,64 +60,86 @@ function EditExpense() {
   if (loading) return <LoadingSpinner text="Loading expense..." />;
 
   return (
-    <div className="form-page page-enter">
-      <div className="form-card">
-        <h2><HiOutlinePencilAlt style={{ color: 'var(--warning)' }} /> Edit Expense</h2>
+    <div
+      className="modal-backdrop"
+      onClick={(e) => { if (e.target === e.currentTarget) navigate('/dashboard'); }}
+    >
+      <div className="card modal-panel w-full max-w-lg p-8">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.22em] text-neutral-500">
+              Edit Entry
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-white">
+              Edit Expense
+            </h2>
+          </div>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="rounded-full border border-white/10 p-2 text-neutral-500 transition-colors hover:border-white/30 hover:text-white"
+            aria-label="Close"
+          >
+            <HiOutlineX />
+          </button>
+        </div>
 
-        {error && <div className="error-msg"><HiOutlineX /> {error}</div>}
+        {error && (
+          <div className="mt-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Title</label>
-            <div className="input-wrapper">
-              <HiOutlineTag className="input-icon" />
+        <form onSubmit={handleSubmit} className="mt-7 flex flex-col gap-5">
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Title
+            </label>
+            <input
+              type="text" name="title" value={form.title} onChange={handleChange}
+              required className="field"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+                Amount (₹)
+              </label>
               <input
-                type="text" name="title" value={form.title}
-                onChange={handleChange} required
+                type="number" name="amount" value={form.amount} onChange={handleChange}
+                min="0" step="1" required className="field tabular-nums"
               />
             </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Amount (₹)</label>
-              <div className="input-wrapper">
-                <HiOutlineCash className="input-icon" />
-                <input
-                  type="number" name="amount" value={form.amount}
-                  onChange={handleChange} min="0" step="1" required
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Category</label>
-              <div className="input-wrapper">
-                <HiOutlineClipboardList className="input-icon" />
-                <select name="category" value={form.category} onChange={handleChange}>
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
+            <div>
+              <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+                Category
+              </label>
+              <select name="category" value={form.category} onChange={handleChange} className="field">
+                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Date</label>
-            <div className="input-wrapper">
-              <HiOutlineCalendar className="input-icon" />
-              <input type="date" name="date" value={form.date} onChange={handleChange} />
-            </div>
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Date
+            </label>
+            <input type="date" name="date" value={form.date} onChange={handleChange} className="field" />
           </div>
 
-          <div className="form-group">
-            <label>Description</label>
-            <div className="input-wrapper">
-              <textarea name="description" value={form.description} onChange={handleChange} />
-            </div>
+          <div>
+            <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+              Description
+            </label>
+            <textarea
+              name="description" value={form.description} onChange={handleChange}
+              rows={3} className="field resize-none"
+            />
           </div>
 
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">Update Expense</button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
+          <div className="mt-2 flex gap-3">
+            <button type="submit" className="btn-primary flex-1">Update Expense</button>
+            <button type="button" className="btn-ghost" onClick={() => navigate('/dashboard')}>
               Cancel
             </button>
           </div>
