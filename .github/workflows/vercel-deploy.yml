@@ -28,5 +28,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./frontend
+          # Run from the repo root: the Vercel project's Root Directory setting
+          # is already "frontend", so cd-ing into it here doubles the path.
+          working-directory: ./
           vercel-args: '--prod'
