@@ -1,6 +1,6 @@
-const { signToken, users, expenses, DEMO_USER_ID } = require('../_store.js');
+import { signToken, users, expenses } from '../_store.js';
 
-module.exports = function handler(req, res) {
+export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -30,7 +30,6 @@ module.exports = function handler(req, res) {
     };
     users.set(email.toLowerCase(), user);
 
-    // Seed initial starter expenses for the new user
     const starterExpenses = [
       { _id: 'exp_' + Date.now() + '_1', userId, title: 'Supermarket Groceries', amount: 850, category: 'Food', date: new Date().toISOString().split('T')[0], description: 'Fresh supplies', createdAt: new Date().toISOString() },
       { _id: 'exp_' + Date.now() + '_2', userId, title: 'Transit Pass', amount: 350, category: 'Transport', date: new Date().toISOString().split('T')[0], description: 'Metro travel', createdAt: new Date().toISOString() },
@@ -45,4 +44,4 @@ module.exports = function handler(req, res) {
     token,
     user: { id: user._id, name: user.name, email: user.email }
   });
-};
+}

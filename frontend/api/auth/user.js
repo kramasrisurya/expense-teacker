@@ -1,6 +1,6 @@
-const { verifyToken, users, DEMO_USER_ID } = require('../_store.js');
+import { verifyToken, users } from '../_store.js';
 
-module.exports = function handler(req, res) {
+export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -37,4 +37,4 @@ module.exports = function handler(req, res) {
     name: foundUser.name,
     email: foundUser.email
   });
-};
+}

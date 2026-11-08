@@ -1,15 +1,15 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const SECRET = 'expense-tracker-jwt-secret-2026';
 
-function signToken(userId) {
+export function signToken(userId) {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
   const payload = Buffer.from(JSON.stringify({ id: userId, exp: Math.floor(Date.now() / 1000) + 30 * 86400 })).toString('base64url');
   const sig = crypto.createHmac('sha256', SECRET).update(`${header}.${payload}`).digest('base64url');
   return `${header}.${payload}.${sig}`;
 }
 
-function verifyToken(token) {
+export function verifyToken(token) {
   if (!token) return null;
   const clean = token.startsWith('Bearer ') ? token.slice(7) : token;
   const parts = clean.split('.');
@@ -26,11 +26,11 @@ function verifyToken(token) {
 }
 
 // In-memory persistent database for serverless container lifecycle
-const users = new Map();
-const expenses = new Map();
+export const users = new Map();
+export const expenses = new Map();
 
 // Seed initial demo user and expenses
-const DEMO_USER_ID = 'demo-user-surya-01';
+export const DEMO_USER_ID = 'demo-user-surya-01';
 users.set('demo@example.com', {
   _id: DEMO_USER_ID,
   name: 'Rama Sri Surya',
@@ -47,11 +47,3 @@ const initialExpenses = [
 ];
 
 initialExpenses.forEach(exp => expenses.set(exp._id, exp));
-
-module.exports = {
-  signToken,
-  verifyToken,
-  users,
-  expenses,
-  DEMO_USER_ID
-};

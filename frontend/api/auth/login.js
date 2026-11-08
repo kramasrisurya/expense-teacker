@@ -1,6 +1,6 @@
-const { signToken, users, DEMO_USER_ID, expenses } = require('../_store.js');
+import { signToken, users, expenses } from '../_store.js';
 
-module.exports = function handler(req, res) {
+export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -21,7 +21,6 @@ module.exports = function handler(req, res) {
 
   let user = users.get(email.toLowerCase());
   if (!user) {
-    // Graceful onboarding: create session user
     const userId = 'usr_' + Date.now();
     user = {
       _id: userId,
@@ -45,4 +44,4 @@ module.exports = function handler(req, res) {
     token,
     user: { id: user._id, name: user.name, email: user.email }
   });
-};
+}
