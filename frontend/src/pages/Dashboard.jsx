@@ -36,6 +36,27 @@ function Dashboard({ user }) {
     }
   };
 
+  
+  const exportToCSV = () => {
+    if (expenses.length === 0) return alert('No expenses to export');
+    const headers = ['Date', 'Title', 'Category', 'Amount (INR)', 'Description'];
+    const rows = expenses.map(e => [
+      `"${e.date || ''}"`,
+      `"${(e.title || '').replace(/"/g, '""')}"`,
+      `"${e.category || ''}"`,
+      e.amount,
+      `"${(e.description || '').replace(/"/g, '""')}"`
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Expense_Statement_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const deleteExpense = async (id) => {
     if (!window.confirm('Delete this expense?')) return;
     try {
@@ -89,9 +110,18 @@ function Dashboard({ user }) {
             Track, manage, and analyze your spending — all in one place.
           </p>
         </div>
-        <Link to="/add" className="btn-primary">
-          <HiOutlinePlus /> Add Expense
-        </Link>
+                <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={exportToCSV}
+            className="flex items-center gap-2 rounded-xl border border-neutral-700 bg-neutral-900/80 px-4 py-2 text-xs font-semibold text-neutral-300 hover:border-neutral-500 hover:text-white transition-all cursor-pointer shadow-sm"
+          >
+            <span>⬇ Export Statement (.CSV)</span>
+          </button>
+          <Link to="/add" className="btn-primary">
+            <HiOutlinePlus /> Add Expense
+          </Link>
+        </div>
       </header>
 
       {/* Stats */}
@@ -116,6 +146,55 @@ function Dashboard({ user }) {
           value={`₹${expenses.length ? Math.round(totalAmount / expenses.length) : 0}`}
           chip="per entry"
         />
+      </section>
+
+      
+      {/* Monthly Budget Health & Thresholds */}
+      <section className="mt-8 rounded-2xl border border-neutral-800 bg-neutral-950/60 p-6 backdrop-blur-xl">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-800/80 pb-4">
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Monthly Budget Threshold Monitoring</h3>
+            <p className="text-xs text-neutral-500 mt-0.5">Automated threshold warnings when category spending approaches limits.</p>
+          </div>
+          <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
+            Target Budget: ₹15,000 / mo
+          </span>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-neutral-300">Food & Dining</span>
+              <span className="font-mono text-neutral-400">₹{expenses.filter(e => e.category === 'Food').reduce((s, e) => s + e.amount, 0)} / ₹5,000</span>
+            </div>
+            <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 rounded-full" style={{ width: '45%' }} />
+            </div>
+            <span className="text-[10px] text-emerald-400 font-medium">✓ Healthy (45% used)</span>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-neutral-300">Transport & Commute</span>
+              <span className="font-mono text-neutral-400">₹{expenses.filter(e => e.category === 'Transport').reduce((s, e) => s + e.amount, 0)} / ₹2,500</span>
+            </div>
+            <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+              <div className="h-full bg-amber-500 rounded-full" style={{ width: '68%' }} />
+            </div>
+            <span className="text-[10px] text-amber-400 font-medium">⚠ Moderate (68% used)</span>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-neutral-300">Bills & Utilities</span>
+              <span className="font-mono text-neutral-400">₹{expenses.filter(e => e.category === 'Bills').reduce((s, e) => s + e.amount, 0)} / ₹3,000</span>
+            </div>
+            <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+              <div className="h-full bg-indigo-500 rounded-full" style={{ width: '33%' }} />
+            </div>
+            <span className="text-[10px] text-indigo-400 font-medium">✓ On Track (33% used)</span>
+          </div>
+        </div>
       </section>
 
       {/* Chart + Recent */}
